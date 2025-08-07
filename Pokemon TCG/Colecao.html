@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Minha Coleção Pokémon</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #2c3e50, #34495e);
+      color: #ecf0f1;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .navbar {
+      width: 100%;
+      background-color: #1a252f;
+      display: flex;
+      justify-content: center;
+      padding: 1rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .navbar a {
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 0 1.5rem;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #f1c40f;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card {
+      display: inline-block;
+      margin: 1rem;
+      background: #1c1c1c;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      padding: 1rem;
+      width: 220px;
+      vertical-align: top;
+    }
+
+    .card img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    .card h3 {
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: #bdc3c7;
+    }
+
+    .empty {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: #bdc3c7;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="Home.html">Home</a>
+    <a href="Pacotes.html">Abrir Pacotes</a>
+    <a href="TCGdex.html">TCGdex</a>
+    <a href="Colecao.html">Coleção</a>
+  </nav>
+
+  <h1>Minha Coleção Pokémon</h1>
+  <div id="colecao-container"></div>
+
+  <script>
+    const container = document.getElementById('colecao-container');
+    const colecao = JSON.parse(localStorage.getItem('colecaoPokemon')) || [];
+
+    if (colecao.length === 0) {
+      container.innerHTML = '<p class="empty">Você ainda não salvou nenhuma carta.</p>';
+    } else {
+      colecao.forEach(carta => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
+          <img src="${carta.images?.large || carta.images?.small}" alt="${carta.name}" />
+          <h3>${carta.name}</h3>
+          <p>${carta.set?.name || 'Conjunto desconhecido'}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>

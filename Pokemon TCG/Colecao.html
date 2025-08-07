@@ -48,6 +48,7 @@
       padding: 1rem;
       width: 220px;
       vertical-align: top;
+      position: relative;
     }
 
     .card img {
@@ -63,6 +64,23 @@
     .card p {
       font-size: 0.9rem;
       color: #bdc3c7;
+    }
+
+    .btn-remove {
+      margin-top: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      border: none;
+      background-color: #e74c3c;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-remove:hover {
+      background-color: #c0392b;
     }
 
     .empty {
@@ -86,22 +104,36 @@
 
   <script>
     const container = document.getElementById('colecao-container');
-    const colecao = JSON.parse(localStorage.getItem('colecaoPokemon')) || [];
+    let colecao = JSON.parse(localStorage.getItem('colecaoPokemon')) || [];
 
-    if (colecao.length === 0) {
-      container.innerHTML = '<p class="empty">Você ainda não salvou nenhuma carta.</p>';
-    } else {
-      colecao.forEach(carta => {
+    function renderizarColecao() {
+      container.innerHTML = '';
+
+      if (colecao.length === 0) {
+        container.innerHTML = '<p class="empty">Você ainda não salvou nenhuma carta.</p>';
+        return;
+      }
+
+      colecao.forEach((carta, index) => {
         const div = document.createElement('div');
         div.className = 'card';
         div.innerHTML = `
           <img src="${carta.images?.large || carta.images?.small}" alt="${carta.name}" />
           <h3>${carta.name}</h3>
           <p>${carta.set?.name || 'Conjunto desconhecido'}</p>
+          <button class="btn-remove" onclick="removerCarta(${index})">Remover</button>
         `;
         container.appendChild(div);
       });
     }
+
+    function removerCarta(index) {
+      colecao.splice(index, 1);
+      localStorage.setItem('colecaoPokemon', JSON.stringify(colecao));
+      renderizarColecao();
+    }
+
+    renderizarColecao();
   </script>
 </body>
 </html>
